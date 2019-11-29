@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="H J">
+
+
+
+
+
+<title>shh-key配置生成 | hj</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">H J&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">H J&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">shh-key配置生成</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">H J</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">November 8, 2019&nbsp;&nbsp;9:33:05</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h4 id="&#x751F;&#x6210;&#x79D8;&#x94A5;"><a href="#&#x751F;&#x6210;&#x79D8;&#x94A5;" class="headerlink" title="&#x751F;&#x6210;&#x79D8;&#x94A5;"></a>&#x751F;&#x6210;&#x79D8;&#x94A5;</h4><p>&#x8F93;&#x5165;&#x5982;&#x4E0B;&#x547D;&#x4EE4;&#x4EE5;&#x751F;&#x4EA7;gitlab&#x670D;&#x52A1;&#x7AEF;&#x548C;&#x672C;&#x5730;git&#x76F8;&#x4E92;&#x4F20;&#x8F93;&#x65F6;&#x6240;&#x9700;&#x8981;&#x6821;&#x9A8C;&#x7684;&#x79C1;&#x94A5;&#x548C;&#x516C;&#x94A5;&#x3002;&#x53CC;&#x5F15;&#x53F7;&#x5185;&#x8F93;&#x5165;&#x7684;&#x662F;&#x4F60;git&#x6CE8;&#x518C;&#x7528;&#x6237;&#x90AE;&#x4EF6;&#x3002;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name&quot;&#x4F60;&#x7684;&#x7528;&#x6237;&#x540D;&quot;</span><br><span class="line"></span><br><span class="line">$ git config --global user.email&quot;&#x4F60;&#x7684;&#x90AE;&#x7BB1;&quot;</span><br><span class="line"></span><br><span class="line">$ ssh-keygen -t rsa -C&quot;&#x4F60;&#x7684;&#x90AE;&#x7BB1;&quot;</span><br><span class="line"></span><br><span class="line">------------------------------------------------------------------------------------</span><br><span class="line">&#x9ED8;&#x8BA4;&#x4F1A;&#x5728;/c/Users/Administrator/.ssh&#x76EE;&#x5F55;&#x4E2D;&#x751F;&#x6210;&#x79D8;&#x94A5;&#xFF0C;&#x5982;&#x679C;&#x63D0;&#x793A;&#x5DF2;&#x7ECF;&#x5B58;&#x5728; &#x53EF;&#x91CD;&#x5199;&#xFF0C;&#x6210;&#x529F;&#x540E;&#x5982;&#x4E0B;&#x663E;&#x793A;&#xFF1A;</span><br><span class="line">Generating public/private rsa key pair.</span><br><span class="line">Enter file in which to save the key (/c/Users/Administrator/.ssh/id_rsa):</span><br><span class="line">Enter passphrase (empty for no passphrase):</span><br><span class="line">Enter same passphrase again:</span><br><span class="line">Your identification has been saved in /c/Users/Administrator/.ssh/id_rsa.</span><br><span class="line">Your public key has been saved in /c/Users/Administrator/.ssh/id_rsa.pub.</span><br><span class="line">The key fingerprint is:</span><br><span class="line">SHA256:LpEhcgm0rrnzsEMjo/e1g8n5Xsdw/TXdvSRjihAfkGo 8888888@qq.com</span><br><span class="line">The key&apos;s randomart image is:</span><br><span class="line">+---[RSA 2048]----+</span><br><span class="line">| .o    ..        |</span><br><span class="line">|   o . ..        |</span><br><span class="line">|  o + o. .       |</span><br><span class="line">| . o E oo ..    +|</span><br><span class="line">|  . . o.S.. .+ o=|</span><br><span class="line">|o=     o.+. o.+.o|</span><br><span class="line">|B... +o o.o.  .. |</span><br><span class="line">|++. =..+ .       |</span><br><span class="line">|o=...o+.         |</span><br><span class="line">+----[SHA256]-----+</span><br></pre></td></tr></table></figure>
+
+<h4 id="&#x914D;&#x7F6E;&#x516C;&#x94A5;"><a href="#&#x914D;&#x7F6E;&#x516C;&#x94A5;" class="headerlink" title="&#x914D;&#x7F6E;&#x516C;&#x94A5;"></a>&#x914D;&#x7F6E;&#x516C;&#x94A5;</h4><p>&#x628A;&#x5728;/c/Users/Administrator/.ssh&#x76EE;&#x5F55;&#x4E2D;&#x751F;&#x6210;&#x7684;&#x516C;&#x94A5;id_rsa.pub(&#x7B2C;&#x4E8C;&#x4E2A;&#x6587;&#x4EF6;) &#x7C98;&#x8D34;&#x5728;gitHub &#x8D26;&#x6237;&#x8BBE;&#x7F6E;&#x7684;SSH KEY&#x4E2D;&#xFF0C;title&#x53EF;&#x4EE5;&#x968F;&#x4FBF;&#x53D6;</p>
+<p><img src="/2019/11/08/shh-key%E9%85%8D%E7%BD%AE%E7%94%9F%E6%88%90/3.png" alt="1"></p>
+<p><img src="/2019/11/08/shh-key%E9%85%8D%E7%BD%AE%E7%94%9F%E6%88%90/1.png" alt="1"></p>
+<h4 id="&#x4EE3;&#x7801;&#x62C9;&#x53D6;"><a href="#&#x4EE3;&#x7801;&#x62C9;&#x53D6;" class="headerlink" title="&#x4EE3;&#x7801;&#x62C9;&#x53D6;"></a>&#x4EE3;&#x7801;&#x62C9;&#x53D6;</h4><p>&#x83B7;&#x53D6;&#x4EE3;&#x7801;&#x4F7F;&#x7528;git clone &#x7684;&#x5730;&#x5740;&#x65F6;&#x5019;&#x9009;&#x62E9;ssh&#x534F;&#x8BAE;&#x7684;&#x5730;&#x5740;&#x94FE;&#x63A5;</p>
+<p><img src="/2019/11/08/shh-key%E9%85%8D%E7%BD%AE%E7%94%9F%E6%88%90/2.png" alt="1"></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>H J</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();" target="_blank" rel="noopener">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2019/11/07/gitLab%E5%BC%80%E5%8F%91%E4%BB%A3%E7%A0%81%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/">gitLab开发代码提交规范</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© H J | Powered by Hexo & Chic</span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
