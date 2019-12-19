@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="H J">
+
+
+
+
+
+<title>lint-staged 、eslint、husky配合规范开发提交(git hooks限制提交) | hj</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">H J&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">H J&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">lint-staged 、eslint、husky配合规范开发提交(git hooks限制提交)</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">H J</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">December 19, 2019&nbsp;&nbsp;23:18:03</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h4 id="Eslint&#x914D;&#x7F6E;"><a href="#Eslint&#x914D;&#x7F6E;" class="headerlink" title="Eslint&#x914D;&#x7F6E;"></a>Eslint&#x914D;&#x7F6E;</h4><p>&#x5982;&#x4F55;&#x914D;&#x7F6E;&#x4E0D;&#x8BE6;&#x8BB2;&#x4E86;&#xFF0C;&#x7F51;&#x4E0A;&#x5F88;&#x591A;&#x6559;&#x7A0B;&#xFF0C;.eslintrc.js&#x662F;&#x6211;&#x5E38;&#x7528;&#x5230;&#x7684;&#x89C4;&#x8303;</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">module.exports = {</span><br><span class="line">  root: true,</span><br><span class="line">  parserOptions: {</span><br><span class="line">    parser: &quot;babel-eslint&quot;</span><br><span class="line">  },</span><br><span class="line">  env: {</span><br><span class="line">    browser: true,</span><br><span class="line">  },</span><br><span class="line">  extends: [</span><br><span class="line">    <span class="comment">// https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention</span></span><br><span class="line">    <span class="comment">// consider switching to `plugin:vue/strongly-recommended` or`plugin:vue/recommended`     //for stricter rules.</span></span><br><span class="line">    &quot;plugin:vue/essential&quot;,</span><br><span class="line">    <span class="comment">// https://github.com/standard/standard/blob/master/docs/RULES-en.md</span></span><br><span class="line">    <span class="string">&quot;standard&quot;</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="comment">// required to lint *.vue files</span></span><br><span class="line">  plugins: [</span><br><span class="line">    <span class="string">&quot;vue&quot;</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="comment">// add your custom rules here</span></span><br><span class="line">  rules: {</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     \* &#x9519;&#x8BEF;&#x7B49;&#x7EA7;&#xFF1A;off(0) | warn(1) | error(2)</span></span><br><span class="line"><span class="comment">     \* &#x5904;&#x7406;&#x65B9;&#x5F0F;&#xFF1A;never | always</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="comment">// &#x5F3A;&#x5236; generator &#x51FD;&#x6570;&#x4E2D; * &#x53F7;&#x5468;&#x56F4;&#x4F7F;&#x7528;&#x4E00;&#x81F4;&#x7684;&#x7A7A;&#x683C;</span></span><br><span class="line">    &quot;generator-star-spacing&quot;: &quot;off&quot;,</span><br><span class="line">    <span class="comment">// &#x5F3A;&#x5236;&#x4F7F;&#x7528;&#x4E00;&#x81F4;&#x7684;&#x7F29;&#x8FDB;</span></span><br><span class="line">    &quot;indent&quot;: [1, 4, {</span><br><span class="line">      &quot;SwitchCase&quot;: 1</span><br><span class="line">    }],</span><br><span class="line">    <span class="comment">// &#x5F3A;&#x5236;&#x5728; &#x51FD;&#x6570; &#x7684;&#x5DE6;&#x62EC;&#x53F7;&#x4E4B;&#x524D;&#x4F7F;&#x7528;&#x4E00;&#x81F4;&#x7684;&#x7A7A;&#x683C;</span></span><br><span class="line">    &quot;space-before-function-paren&quot;: [0, &quot;always&quot;],</span><br><span class="line">    <span class="comment">// &#x64CD;&#x4F5C;&#x7B26;&#x5468;&#x56F4;&#x6709;&#x7A7A;&#x683C;</span></span><br><span class="line">    &quot;space-infix-ops&quot;: [2, { &quot;int32Hint&quot;: false }],</span><br><span class="line">    <span class="comment">// &#x7981;&#x6B62;&#x4F7F;&#x7528;&#x591A;&#x4E2A;&#x7A7A;&#x683C;</span></span><br><span class="line">    &quot;no-multi-spaces&quot;: [0],</span><br><span class="line">    <span class="comment">// &#x7981;&#x6B62;&#x51FA;&#x73B0;&#x672A;&#x4F7F;&#x7528;&#x8FC7;&#x7684;&#x53D8;&#x91CF;</span></span><br><span class="line">    &quot;no-unused-vars&quot;: [0],</span><br><span class="line">    <span class="comment">// &#x7981;&#x6B62;&#x51FA;&#x73B0;&#x591A;&#x884C;&#x7A7A;&#x884C;</span></span><br><span class="line">    &quot;no-multiple-empty-lines&quot;: [0],</span><br><span class="line">    <span class="comment">// return &#x8BED;&#x53E5;&#x4E2D;&#x4E0D;&#x80FD;&#x6709;&#x8D4B;&#x503C;&#x8868;&#x8FBE;&#x5F0F;</span></span><br><span class="line">    &quot;no-return-assign&quot;: [0],</span><br><span class="line">    <span class="comment">// &#x7981;&#x6B62;&#x65E0;&#x7528;&#x7684;&#x8868;&#x8FBE;&#x5F0F;</span></span><br><span class="line">    &quot;no-unused-expressions&quot;: [0],</span><br><span class="line">    <span class="comment">// &#x7ACB;&#x5373;&#x6267;&#x884C;&#x51FD;&#x6570;&#x8868;&#x8FBE;&#x5F0F;&#x7684;&#x5C0F;&#x62EC;&#x53F7;&#x98CE;&#x683C;</span></span><br><span class="line">    &quot;wrap-iife&quot;: [0, &quot;inside&quot;],</span><br><span class="line">    <span class="comment">// &#x7981;&#x7528; debugger &#x8C03;&#x8BD5;&#x5668;&#xFF1A;&#x751F;&#x6210;&#x73AF;&#x5883;&#x7981;&#x6B62;&#x4F7F;&#x7528;</span></span><br><span class="line">    &quot;no-debugger&quot;: process.env.NODE_ENV === &quot;production&quot; ? &quot;error&quot; : &quot;off&quot;</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+
+<h4 id="lint-staged-&#x3001;husky&#x914D;&#x7F6E;"><a href="#lint-staged-&#x3001;husky&#x914D;&#x7F6E;" class="headerlink" title="lint-staged &#x3001;husky&#x914D;&#x7F6E;"></a>lint-staged &#x3001;husky&#x914D;&#x7F6E;</h4><p>1&#x3001;&#x9996;&#x5148;&#xFF0C;&#x6211;&#x4EEC;&#x4F7F;&#x7528;&#x4E0B;&#x9762;&#x7684;&#x547D;&#x4EE4;&#x628A; husky &#x548C; lint-staged &#x5B89;&#x88C5;&#x5230; Node.js &#x9879;&#x76EE;&#x7684; <code>devDependencies</code> &#x4E2D;&#xFF1A;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install husky lint-staged --save-dev</span><br></pre></td></tr></table></figure>
+
+<p>2&#x3001;&#x4FEE;&#x6539; package.json &#x914D;&#x7F6E;</p>
+<p>&#x5C06;&#x4E0B;&#x9762;&#x7684;&#x4EE3;&#x7801;&#x52A0;&#x5165; package.json&#x6587;&#x4EF6;&#x4E2D;&#xFF1A;</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">{</span><br><span class="line">  <span class="attr">&quot;husky&quot;</span>: {</span><br><span class="line">    <span class="attr">&quot;hooks&quot;</span>: {</span><br><span class="line">      <span class="attr">&quot;pre-commit&quot;</span>: <span class="string">&quot;lint-staged&quot;</span></span><br><span class="line">    }</span><br><span class="line">  },</span><br><span class="line">  <span class="attr">&quot;lint-staged&quot;</span>: {</span><br><span class="line">    <span class="attr">&quot;*.{vue, js}&quot;</span>: [</span><br><span class="line">    	<span class="string">&quot;eslint --fix --quiet&quot;</span>,</span><br><span class="line">    	<span class="string">&quot;git add&quot;</span></span><br><span class="line">    ]</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+
+<p>&#x8FD9;&#x6837;&#xFF0C;&#x5F53;&#x5728;&#x7EC8;&#x7AEF;&#x8F93;&#x5165; <code>git commit</code> &#x547D;&#x4EE4;&#x63D0;&#x4EA4;&#x4EE3;&#x7801;&#x7684;&#x65F6;&#x5019;&#xFF0C;Lint &#x7A0B;&#x5E8F;&#x4FBF;&#x4F1A;&#x81EA;&#x52A8;&#x68C0;&#x67E5;&#x672C;&#x6B21;&#x63D0;&#x4EA4;&#x6240;&#x4FEE;&#x6539;&#x7684;&#x6587;&#x4EF6;&#x662F;&#x5426;&#x7B26;&#x5408;&#x672C;&#x9879;&#x76EE;&#x7684;&#x4EE3;&#x7801;&#x89C4;&#x8303;&#x3002;&#x5982;&#x679C;&#x4EE3;&#x7801;&#x4E0D;&#x7B26;&#x5408;&#x89C4;&#x8303;&#xFF0C;&#x4FBF;&#x4F1A;&#x62D2;&#x7EDD;&#x63D0;&#x4EA4;&#x4EE3;&#x7801;&#x3002;</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/12/6/16782fd07b97cd70?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="&#x4F7F;&#x7528; husky &#x540E;&#x63D0;&#x4EA4;"></p>
+<p>&#x5982;&#x679C;&#x60F3;&#x8981;&#x8DF3;&#x8FC7; Lint &#x7A0B;&#x5E8F;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; <code>git commit -no-verify</code> &#x8FDB;&#x884C;&#x63D0;&#x4EA4;&#x3002;</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>H J</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();" target="_blank" rel="noopener">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2019/12/19/shh-key%E9%85%8D%E7%BD%AE%E7%94%9F%E6%88%90/">shh-key配置生成</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© H J | Powered by Hexo & Chic</span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
